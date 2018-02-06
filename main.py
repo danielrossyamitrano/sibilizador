@@ -1,3 +1,7 @@
+# Based on Mabodo's ipython notebook (https://github.com/mabodo/sibilizador)
+# (c) Mabodo
+
+
 class CharLine:
     def __init__(self, word):
         self.word = word
@@ -6,9 +10,10 @@ class CharLine:
 
     @staticmethod
     def char_type(char):
+        char = char.lower()
         if char in ['a', 'á', 'e', 'é', 'o', 'ó', 'í', 'ú']:
             return 'V'  # strong vowel
-        if char in ['i', 'u']:
+        if char in ['i', 'u', 'ü']:
             return 'v'  # week vowel
         if char == 'x' or char == 's':
             return char
@@ -19,12 +24,11 @@ class CharLine:
         split_point = self.type_line.find(finder)
         if split_point != -1:
             chl1, chl2 = CharLine(self.word[0:split_point + where]), CharLine(self.word[split_point + where:])
-            # chl1, chl2 = self.split(split_point, where)
             return chl1, chl2
         return self, False
 
     def __str__(self):
-        return '<' + self.word + ':' + self.type_line + '>'
+        return self.word
 
     def __repr__(self):
         return '<' + repr(self.word) + ':' + self.type_line + '>'
@@ -41,19 +45,14 @@ class Silabizer:
             first, second = chars.split_by(split_rule, where)
             if second:
                 if first.type_line in ['c', 's', 'x', 'cs'] or second.type_line in ['c', 's', 'x', 'cs']:
-                    print('skip1', first.word, second.word, split_rule, chars.type_line)
                     continue
                 if first.type_line[-1] == 'c' and second.word[0] in ['l', 'r']:
-                    print('skip2', first.word, second.word, split_rule, chars.type_line)
                     continue
                 if first.word[-1] == 'l' and second.word[-1] == 'l':
-                    print('skip3', first.word, second.word, split_rule, chars.type_line)
                     continue
                 if first.word[-1] == 'r' and second.word[-1] == 'r':
-                    print('skip4', first.word, second.word, split_rule, chars.type_line)
                     continue
                 if first.word[-1] == 'c' and second.word[-1] == 'h':
-                    print('skip5', first.word, second.word, split_rule, chars.type_line)
                     continue
                 return self.split(first) + self.split(second)
         return [chars]
@@ -64,4 +63,9 @@ class Silabizer:
 
 s = Silabizer()
 
-print(s('esdrújula'))
+lista = s('cigüeña')
+for i, item in enumerate(lista):
+    if i != len(lista) - 1:
+        print(item, '-', sep='', end='')
+    else:
+        print(item)
