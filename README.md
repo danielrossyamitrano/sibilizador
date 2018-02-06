@@ -1,6 +1,4 @@
-sibilizador
+Silabilizador
 ===========
 
-Script python que intenta separar en silabas palabras en español
-
-El script es una ipython notebook visualizable en nbviewer
+Script de Python 3 que separara en silabas palabras en español.
