@@ -23,7 +23,8 @@ class CharLine:
     def split_by(self, finder, where):
         split_point = self.type_line.find(finder)
         if split_point != -1:
-            chl1, chl2 = CharLine(self.word[0:split_point + where]), CharLine(self.word[split_point + where:])
+            chl1 = CharLine(self.word[0:split_point + where])
+            chl2 = CharLine(self.word[split_point + where:])
             return chl1, chl2
         return self, False
 
@@ -36,15 +37,19 @@ class CharLine:
 
 class Silabilizador:
     def __init__(self):
-        self.grammar = [('VV', 1), ('cccc', 2), ('xcc', 1), ('ccx', 2), ('csc', 2), ('xc', 1), ('cc', 1), ('vcc', 2),
-                        ('Vcc', 2), ('sc', 1), ('cs', 1), ('Vc', 1), ('vc', 1), ('Vs', 1), ('vs', 1), ('vxv', 1),
+        self.grammar = [('VV', 1), ('cccc', 2), ('xcc', 1), ('ccx', 2),
+                        ('csc', 2), ('xc', 1), ('cc', 1), ('vcc', 2),
+                        ('Vcc', 2), ('sc', 1), ('cs', 1), ('Vc', 1),
+                        ('vc', 1), ('Vs', 1), ('vs', 1), ('vxv', 1),
                         ('VxV', 1), ('vxV', 1), ('Vxv', 1)]
 
     def split(self, chars):
         for split_rule, where in self.grammar:
             first, second = chars.split_by(split_rule, where)
             if second:
-                if first.type_line in ['c', 's', 'x', 'cs'] or second.type_line in ['c', 's', 'x', 'cs']:
+                if first.type_line in ['c', 's', 'x', 'cs']:
+                    continue
+                if second.type_line in ['c', 's', 'x', 'cs']:
                     continue
                 if first.type_line[-1] == 'c' and second.word[0] in ['l', 'r']:
                     continue
@@ -59,5 +64,3 @@ class Silabilizador:
 
     def __call__(self, word):
         return self.split(CharLine(word))
-
-
