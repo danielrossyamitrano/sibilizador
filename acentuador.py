@@ -19,11 +19,7 @@ def acentuador(word: str):
 
     if antepenultima:
         return split_word, 'esdrújula'
-    elif nsv and ultima:
+    elif (nsv and ultima) or not ultima:
         return split_word, 'aguda'
-    elif nsv and not anteultima:
-        return split_word, 'grave'
-    elif not ultima:
-        return split_word, 'aguda'
-    elif anteultima:
+    elif (nsv and not anteultima) or anteultima:
         return split_word, 'grave'

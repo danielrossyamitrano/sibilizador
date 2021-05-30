@@ -1,5 +1,6 @@
 # Based on Mabodo's ipython notebook (https://github.com/mabodo/sibilizador)
 # (c) Mabodo
+# from.divided import DividedWord
 
 
 class CharLine:
@@ -36,12 +37,13 @@ class CharLine:
 
 
 class Silabilizador:
-    def __init__(self):
+    def __init__(self, verbose=True):
         self.grammar = [('VV', 1), ('cccc', 2), ('xcc', 1), ('ccx', 2),
                         ('csc', 2), ('xc', 1), ('cc', 1), ('vcc', 2),
                         ('Vcc', 2), ('sc', 1), ('cs', 1), ('Vc', 1),
                         ('vc', 1), ('Vs', 1), ('vs', 1), ('vxv', 1),
                         ('VxV', 1), ('vxV', 1), ('Vxv', 1)]
+        self.verbose = verbose
 
     def split(self, chars):
         for split_rule, where in self.grammar:
@@ -63,4 +65,8 @@ class Silabilizador:
         return [chars]
 
     def __call__(self, word):
-        return self.split(CharLine(word))
+        s = self.split(CharLine(word))
+        if self.verbose:
+            return s
+        else:
+            return '-'.join([str(w) for w in s])
